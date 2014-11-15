@@ -40,15 +40,15 @@ module.exports = function (config) {
 
 	config = config || {};
   
-	var requesHandler = function (req, res, next) {
+	var requestHandler = function (req, res, next) {
 		req.getPathConfig = function () {
 			return getPathConfig(req.url);
 		};
 	  next();
 	};
 
-	requesHandler.getPathConfig = getPathConfig;
+	requestHandler.getPathConfig = getPathConfig;
 
-  return requesHandler;
+  return requestHandler;
     
 };

@@ -18,13 +18,13 @@ describe('config path', function () {
 		
 		pc = PathConfig({
 			'': {x: 1, y: 0},	// root config
-			'a': {			// path /a
+			a: {			// path /a
 				'': {x: 'a'},	// config /a
-				'b': {		// path /a/b
+				b: {		// path /a/b
 					'': {x: 'a.b'} // config /a/b
 				},
 				':y': {		// path /a/?
-					'c': {	// path /a/?/c
+					c: {	// path /a/?/c
 						'': {x: 'a.:y.c'}	// config a/?/c
 					}
 				}

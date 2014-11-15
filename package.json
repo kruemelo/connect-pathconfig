@@ -1,0 +1,28 @@
+{
+  "name": "connect-pathconfig",
+  "version": "1.0.0",
+  "description": "connect/express middleware that provides url path-related configurations for requests",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kruemelo/connect-pathconfig.git"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "config",
+    "req",
+    "path",
+    "connect",
+    "express"
+  ],
+  "author": "kruemelo",
+  "license": "WTFPL",
+  "devDependencies": {
+    "connect": "^3.3.3",
+    "mocha": "^2.0.1",
+    "request": "^2.48.0"
+  },
+  "dependencies": {}
+}

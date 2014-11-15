@@ -3,13 +3,26 @@ connect-pathconfig
 
 connect/express middleware that provides url path-related configurations for requests
 
-.h1 install
-$ npm install connect-pathconfig
+install
+-------
+
+add to an existing connect/express project: install from command line
+```
+$ cd PROJECT-NAME
+$ npm install connect-pathconfig --save
+```
 
 test
+----
+uses mocha test
+```
 $ mocha
+```
 
 use
+---
+within a node connect or express project, use as middleware:
+```
 var connect = require('connect')
 var pathconfig = require('connect-pathconfig');
 var app = connect();
@@ -26,3 +39,4 @@ app.use(pathconfig(config));
 app.use(function (req, res) {
   console.log(req.getPathConfig());
 });
+```

@@ -1,6 +1,6 @@
 {
   "name": "connect-pathconfig",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "connect/express middleware that provides url path-related configurations for requests",
   "main": "app.js",
   "repository": {

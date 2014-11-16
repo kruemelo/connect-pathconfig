@@ -1,46 +1,75 @@
+// npm connect-pathconfig
 
 var url = require('url');
+var path = require('path');
 
 // the middleware function
 module.exports = function (config) {
 
-	function getPathConfig (path) {
+	config = config || {};
 
-		var pathConfig = config[''] || {},
-			tmpPathNode = config;
+	function parse (_path) {
 
-		path = 'string' === typeof path && path.trim() || '/';
+		var pathparts = [];
 
-		if ('/' !== path[0]) {
-			path = '/' +  path;
-		}
+		_path = 'string' === typeof _path && _path || '/';
 
-		path.split('/').forEach(function (pathPart) {
-			if (tmpPathNode) {		
-				if (pathPart = pathPart.trim()) {
-					if (!tmpPathNode[pathPart]) {	
-						for (var k in tmpPathNode) {
-							if (k && ':' === k[0]) {
-								pathPart = k; 
-								break;
-							}
-						}				
+		_path.split(/\/+/)
+			.forEach(function (term) {
+				term = term.trim();
+				if (term.length && '.' !== term) {
+					if ('..' === term) {
+						pathparts.pop();
 					}
-					if (tmpPathNode = tmpPathNode[pathPart]) {
-						for (var k in tmpPathNode['']) {
-							if (k) {
-								pathConfig[k] = tmpPathNode[''][k];
-							}
-						}
+					else {
+						pathparts.push(term);
 					}
 				}
+			});
+
+		return pathparts;
+	}
+
+	function getPathConfig (pathname) {
+
+		var pathConfig = {},
+			tmpPathNode = config,
+			k,
+			pathparts, pathpartsLength, 
+			level, pathPart;
+
+		// always use root as default
+		for (k in config['']) {
+			pathConfig[k] = config[''][k];
+		}
+
+		pathparts = parse(pathname);
+
+		for (
+			level = 0, pathpartsLength = pathparts.length; 
+			level < pathpartsLength && tmpPathNode; 
+			++level
+		) {
+			pathPart = pathparts[level];
+			if (!tmpPathNode[pathPart]) {	
+				for (k in tmpPathNode) {
+					if (k && ':' === k[0]) {
+						pathPart = k; 
+						break;
+					}
+				}				
 			}
-		});
+			tmpPathNode = tmpPathNode[pathPart];
+			if (tmpPathNode && tmpPathNode['']) {
+				// extend/override path config
+				for (k in tmpPathNode['']) {
+					pathConfig[k] = tmpPathNode[''][k];
+				}
+			}
+		}
 
 		return pathConfig;
-	};    
-
-	config = config || {};
+	}
   
 	var requestHandler = function (req, res, next) {
 		req.getPathConfig = function () {
@@ -49,7 +78,9 @@ module.exports = function (config) {
 	  next();
 	};
 
+	// expose internal functions
 	requestHandler.getPathConfig = getPathConfig;
+	requestHandler.parse = parse;
 
   return requestHandler;
     

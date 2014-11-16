@@ -6,7 +6,7 @@ var pc = PathConfig();
 describe('config path', function () {
 
 	it('should instanciate with a default config', function () {
-		assert.strictEqual(typeof PathConfig(), 'function');
+		assert.strictEqual(typeof PathConfig, 'function');
 	});
 
 	it('should get path config', function () {
@@ -45,6 +45,44 @@ describe('config path', function () {
 	});
 
  });
+
+describe('request handler', function () {
+
+	it('should be a function', function () {
+		assert.strictEqual(typeof PathConfig(), 'function');
+	});
+
+	it('should be a function', function () {
+
+		var pc = PathConfig({
+			'': {x: 1, y: 0},	// root config
+			'a': {			// path /a
+				'': {x: 'a'},	// config /a
+				'b': {		// path /a/b
+					'': {x: 'a.b'} // config /a/b
+				},
+				':y': {		// path /a/?
+					'c': {	// path /a/?/c
+						'': {x: 'a.:y.c'}	// config a/?/c
+					}
+				}
+			}			
+		}),
+		req = {
+			url: 'http://user:pass@host.com:8080/p/a/t/h?query=string#hash'
+		},
+		next = function () {};
+
+		assert.strictEqual(typeof pc, 'function');
+
+		pc(req, null, next)
+		assert.strictEqual(typeof req.getPathConfig, 'function');
+
+		assert.deepEqual(req.getPathConfig(), {x: 1, y: 0});
+
+	});
+
+});
 
 describe('used as connect middleware', function () {
 

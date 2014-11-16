@@ -1,4 +1,6 @@
 
+var url = require('url');
+
 // the middleware function
 module.exports = function (config) {
 
@@ -42,7 +44,7 @@ module.exports = function (config) {
   
 	var requestHandler = function (req, res, next) {
 		req.getPathConfig = function () {
-			return getPathConfig(req.url);
+			return getPathConfig(url.parse(req.url).pathname);
 		};
 	  next();
 	};

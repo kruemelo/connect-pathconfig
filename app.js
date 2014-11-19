@@ -72,8 +72,9 @@ module.exports = function (config) {
 	}
   
 	var requestHandler = function (req, res, next) {
+		var originalUrl = req.url;
 		req.getPathConfig = function () {
-			return getPathConfig(url.parse(req.url).pathname);
+			return getPathConfig(url.parse(originalUrl).pathname);
 		};
 	  next();
 	};

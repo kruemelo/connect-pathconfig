@@ -1,7 +1,7 @@
 connect-pathconfig
 ==================
 
-Node packed module for connect/express middleware that provides url path-related configurations for requests
+Node packaged module for connect/express middleware that provides url path-related configurations for requests
 
 install
 -------
